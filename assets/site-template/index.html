@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN" data-article-theme="__ARTICLE_THEME__" data-one-page-layout="__ONE_PAGE_LAYOUT__">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <meta name="description" content="__META_DESCRIPTION__">
+  <meta name="color-scheme" content="light">
+  <title>__DOCUMENT_TITLE__</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="print.css" media="print">
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <progress class="reading-progress" id="reading-progress-bar" max="1" value="0" aria-label="阅读进度"></progress>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-mark" href="#article" aria-label="返回正文">
+        <span class="site-mark-glyph" aria-hidden="true"></span>
+        <span>视觉解读</span>
+      </a>
+      <div class="source-summary"><!--SOURCE_SUMMARY--></div>
+      <div class="header-actions">
+        <button class="action-button" id="copy-markdown" type="button">复制 Markdown</button>
+        <button class="action-button action-button-primary" id="download-markdown" type="button">下载 .md</button>
+      </div>
+    </div>
+    <nav class="view-tabs" aria-label="文章视图">
+      <button class="view-tab" type="button" role="tab" aria-selected="true" aria-controls="view-article" id="tab-article" data-target-view="article">正文</button>
+      <button class="view-tab" type="button" role="tab" aria-selected="false" aria-controls="view-one-page" id="tab-one-page" data-target-view="one-page" tabindex="-1">一页纸</button>
+      <button class="view-tab" type="button" role="tab" aria-selected="false" aria-controls="view-comic" id="tab-comic" data-target-view="comic" tabindex="-1">秒懂漫画</button>
+    </nav>
+  </header>
+  <main id="main-content">
+    <section class="view-panel" id="view-article" role="tabpanel" aria-labelledby="tab-article" data-view="article"><!--ARTICLE_CONTENT--></section>
+    <section class="view-panel" id="view-one-page" role="tabpanel" aria-labelledby="tab-one-page" data-view="one-page" hidden><!--ONE_PAGE_CONTENT--></section>
+    <section class="view-panel" id="view-comic" role="tabpanel" aria-labelledby="tab-comic" data-view="comic" hidden><!--COMIC_CONTENT--></section>
+  </main>
+  <footer class="site-footer"><!--FOOTER_CONTENT--></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <template id="article-markdown"><!--MARKDOWN_JSON--></template>
+</body>
+</html>

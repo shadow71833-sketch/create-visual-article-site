@@ -1,0 +1,154 @@
+{
+  "version": 2,
+  "generatedAt": "2026-08-10T00:00:00.000Z",
+  "article": {
+    "slug": "qwen-long-work",
+    "title": "长周期智能体如何交付真实工作",
+    "subtitle": "从工程、科研到芯片优化的证据链",
+    "source": {
+      "name": "示例来源",
+      "url": "https://example.com/research/qwen",
+      "publishedAt": "2026-08-03",
+      "verified": true
+    },
+    "readingMinutes": 8,
+    "summary": "模型能力的重点从单次回答转向长周期、可验证的交付。",
+    "keyPoints": [
+      "持续运行必须有测试和回退机制",
+      "每个数字都需要映射到来源",
+      "视觉摘要不得替代事实核验"
+    ],
+    "sections": [
+      {
+        "id": "delivery",
+        "title": "交付能力",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "未经信任的正文可能包含 <script>alert(\"xss\")</script>，页面必须把它当作文字。"
+          },
+          {
+            "type": "callout",
+            "tone": "evidence",
+            "title": "验证原则",
+            "text": "先过功能验证，再比较效率。",
+            "factIds": ["fact-1"]
+          },
+          {
+            "type": "table",
+            "caption": "示例对比",
+            "headers": ["阶段", "结果"],
+            "rows": [["初始", "可运行"], ["最终", "通过验证"]]
+          },
+          {
+            "type": "code",
+            "text": "const verified = true;"
+          },
+          {
+            "type": "media-link",
+            "title": "官方演示",
+            "text": "查看长周期任务的完整过程。",
+            "url": "https://example.com/demo.mp4",
+            "factIds": ["fact-1"]
+          }
+        ]
+      }
+    ]
+  },
+  "facts": [
+    {
+      "id": "fact-1",
+      "claim": "示例结果已经过功能验证。",
+      "sourceUrl": "https://example.com/research/qwen#result",
+      "status": "source-claimed"
+    }
+  ],
+  "onePage": {
+    "eyebrow": "一分钟速览",
+    "headline": "长任务的关键不是坚持，而是可验证地纠错",
+    "deck": "把任务拆成有状态、可测试、能回退的循环。",
+    "metrics": [
+      {"value": "16 天", "label": "连续运行", "note": "来源方报告", "factIds": ["fact-1"]},
+      {"value": "3 层", "label": "质量门槛", "note": "内容、视觉、安全", "factIds": ["fact-1"]}
+    ],
+    "modules": [
+      {
+        "type": "timeline",
+        "title": "交付循环",
+        "items": [
+          {"title": "采集", "body": "保存来源快照", "factIds": ["fact-1"]},
+          {"title": "生成", "body": "构建三个视图", "factIds": ["fact-1"]},
+          {"title": "验证", "body": "失败则返回修正", "factIds": ["fact-1"]}
+        ]
+      },
+      {
+        "type": "risks",
+        "title": "仍需注意",
+        "items": [
+          {"title": "来源口径", "body": "官方案例不等于独立复测", "factIds": ["fact-1"]}
+        ]
+      }
+    ]
+  },
+  "comic": {
+    "title": "让长任务自己纠错",
+    "pages": [
+      {
+        "id": "comic-page-1",
+        "image": "assets/comic/test-comic.png",
+        "alt": "机器人发现测试失败并将任务送回修复循环的清线漫画",
+        "caption": "测试与回退构成可验证的任务循环。",
+        "factIds": ["fact-1"],
+        "panelIds": ["panel-1"],
+        "subtitles": [
+          {
+            "panelId": "panel-1",
+            "kind": "narration",
+            "text": "状态机让错误不会静默进入最终结果。",
+            "factIds": ["fact-1"]
+          }
+        ]
+      }
+    ],
+    "panels": [
+      {
+        "id": "panel-1",
+        "scene": "工程控制室中的任务看板",
+        "dialogue": "测试没过，任务退回重修。",
+        "narration": "状态机让错误不会静默进入最终结果。",
+        "factIds": ["fact-1"]
+      }
+    ]
+  },
+  "theme": {
+    "articleTheme": "signal-editorial",
+    "onePageLayout": "linear-progression",
+    "illustrationStyle": "technical-editorial",
+    "comicStyle": "clear-line",
+    "comicLayout": "webtoon",
+    "palette": "cobalt-signal",
+    "colors": {
+      "paper": "#F3F5F0",
+      "surface": "#FFFFFF",
+      "ink": "#182039",
+      "muted": "#687287",
+      "accent": "#5947E8",
+      "signal": "#FF5A36"
+    }
+  },
+  "markdown": "# 长周期智能体如何交付真实工作\n\n<script>alert(\"markdown\")</script>\n\n正文内容。",
+  "sourceManifest": {
+    "originalUrl": "https://example.com/research/qwen",
+    "capturedAt": "2026-08-10T00:00:00.000Z",
+    "assets": [
+      {
+        "path": "assets/comic/test-comic.png",
+        "kind": "ai-generated",
+        "capturedAt": "2026-08-10T00:00:00.000Z",
+        "purpose": "验证漫画交付门禁的本地测试图片",
+        "generationMethod": "native-imagegen",
+        "createdFor": "qwen-long-work"
+      }
+    ]
+  }
+}

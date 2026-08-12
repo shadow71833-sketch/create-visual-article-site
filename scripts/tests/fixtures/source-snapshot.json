@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "canonicalUrl": "https://example.com/research/qwen",
+  "capturedAt": "2026-08-10T00:00:00.000Z",
+  "preamble": {
+    "title": "长周期智能体如何交付真实工作",
+    "subtitle": "从工程、科研到芯片优化的证据链",
+    "summary": "模型能力的重点从单次回答转向长周期、可验证的交付。",
+    "keyPoints": [
+      "持续运行必须有测试和回退机制",
+      "每个数字都需要映射到来源",
+      "视觉摘要不得替代事实核验"
+    ]
+  },
+  "sections": [
+    {
+      "id": "delivery",
+      "title": "交付能力",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "未经信任的正文可能包含 <script>alert(\"xss\")</script>，页面必须把它当作文字。"
+        },
+        {
+          "type": "callout",
+          "tone": "evidence",
+          "title": "验证原则",
+          "text": "先过功能验证，再比较效率。"
+        },
+        {
+          "type": "table",
+          "caption": "示例对比",
+          "headers": ["阶段", "结果"],
+          "rows": [
+            ["初始", "可运行"],
+            ["最终", "通过验证"]
+          ]
+        },
+        {
+          "type": "code",
+          "text": "const verified = true;"
+        },
+        {
+          "type": "media-link",
+          "title": "官方演示",
+          "text": "查看长周期任务的完整过程。",
+          "url": "https://example.com/demo.mp4"
+        }
+      ]
+    }
+  ]
+}

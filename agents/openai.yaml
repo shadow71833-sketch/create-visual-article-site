@@ -1,7 +1,7 @@
 interface:
   display_name: "可视化文章网站"
-  short_description: "将完整正文转换为排版整齐、可验证的三视图静态网站"
-  default_prompt: "使用 $create-visual-article-site 完整保留这篇文章，并制作成排版整齐、经过完整度验证的三视图静态网站。"
+  short_description: "将完整正文转换为含真漫画与一页纸的可验证三视图网站"
+  default_prompt: "使用 $create-visual-article-site 完整保留这篇文章，并制作成排版整齐、经过完整度验证的三视图静态网站；秒懂漫画默认生成有场景和人物动作的真漫画，字幕放在图片下方，画风根据内容自动选择。用户说“三视图”时自动调用该 Skill，无需显式写出 Skill 名称。"
 
 policy:
   allow_implicit_invocation: true

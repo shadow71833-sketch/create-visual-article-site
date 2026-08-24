@@ -7,7 +7,7 @@
 - `verify-output.mjs` reports `ok: true`.
 - `completeness-report.json` reports `ok: true`.
 - Exactly three view panels exist.
-- The comic view contains at least one delivered page. Editorial pages must map trusted rows to every storyboard panel exactly once and in order; illustrated pages require local page art rather than a storyboard-only fallback.
+- The comic view contains at least one delivered page. Default illustrated packages must contain only image pages with local page art rather than a storyboard-only or text-card fallback. Explicit editorial packages must contain only editorial pages and map trusted rows to every storyboard panel exactly once and in order.
 - Every visible editorial panel or illustrated subtitle expresses all of its matched panel fact IDs.
 - Consumer HTML contains no evidence rail and no visible `fact-*` IDs, chips, lists, or labels.
 - Complete-expansion packages report one-page and comic fact coverage of exactly 100%, with no missing fact IDs.
@@ -39,11 +39,12 @@ Inspect approximately 1440 px and 375 px widths:
 - the reading title remains editorial rather than poster-like: on the shared desktop template, keep the maximum at `2.6rem`, use the full available hero width for Chinese titles without a `ch` cap, and avoid large unused hero space;
 - tables scroll only inside their wrapper on narrow screens, captions stay attached, and media links align as editorial rows;
 - the reading view is a centered single-column article without an evidence spine;
-- editorial pages read as paced comics rather than reports: use short captions, visible turns, irregular trusted rows, at least three display kinds and three row layouts for multi-page work, and no three consecutive prose panels;
+- illustrated pages read as true scene-based comics rather than posters, dashboards, diagrams, or text cards: require concrete subjects, environments, actions, expressions, shot variation, and coherent visual continuity;
+- explicit editorial fallback pages read as paced comics rather than reports: use short captions, visible turns, irregular trusted rows, at least three display kinds and three row layouts for multi-page work, and no three consecutive prose panels;
 - editorial mobile order matches row order, panels collapse cleanly to one column, page numbers remain visible, and no dialogue, stat, list, or takeaway is clipped;
 - illustrated comic images load with non-zero natural width and height, and every subtitle remains visible without clipping;
 - when an illustrated page uses `panelGrid`, every subtitle sits below its matching cropped panel image, the crop shows the intended scene, and mobile stacks image-caption pairs in one column;
-- in standard mode, sources with at least six factual beats or an editorial multi-page benchmark should prefer 8–12 panels across 2–4 pages; in complete mode, add as many readable 3–5-panel editorial pages as required for 100% comic fact coverage and never count unrelated prose as coverage;
+- in standard mode, sources with at least six factual beats should prefer 8–12 panels across 2–4 pages; in complete mode, add as many readable 3–5-panel illustrated pages as required for 100% comic fact coverage and never count unrelated prose as coverage;
 - tabs show selected state and work with keyboard arrows;
 - color contrast remains legible;
 - reduced-motion users receive no required animation;
@@ -52,8 +53,8 @@ Inspect approximately 1440 px and 375 px widths:
 ## Asset gates
 
 - Original images have provenance and descriptive alt text.
-- Editorial comic pages have no image dependency and therefore add no comic asset entries.
-- When optional AI images or illustrated comic pages are used, they are marked `native-imagegen`, tied to the current article slug, and not reused from another task.
+- Default illustrated comic pages use local comic assets marked `native-imagegen`, tied to the current article slug, and not reused from another task.
+- Explicit editorial fallback pages have no image dependency and therefore add no comic asset entries.
 - Repeated illustrated-comic characters remain recognizably consistent.
 - Generated images contain no fabricated logos, facts, or unrequested public figures.
 - Wrong bitmap text is regenerated rather than patched.

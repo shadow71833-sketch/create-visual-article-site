@@ -1,6 +1,6 @@
 # Editorial comic
 
-Use this format by default for the 秒懂漫画 view. It follows an editorial HTML/CSS grammar: short beats, irregular bordered panels, speech shapes, statistics, sound effects, contrast, and a clear page turn. It does not require generated comic images.
+Use this HTML/CSS format only as an explicit fallback for the 秒懂漫画 view when image generation is unsafe, unavailable, or still fails after bounded retries. Set `delivery.comicMode: "editorial"` before building. The default mode is illustrated and must not be silently replaced by this format. The fallback grammar uses short beats, irregular bordered panels, speech shapes, statistics, sound effects, contrast, and a clear page turn without generated comic images.
 
 ## Narrative construction
 

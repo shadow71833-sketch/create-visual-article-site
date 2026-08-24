@@ -10,7 +10,7 @@ Use one versioned JSON package as the only input to the static builder. Source H
 |---|---|
 | `version` | Integer `2` |
 | `generatedAt` | ISO-8601 timestamp |
-| `delivery` | Optional delivery settings; use `{ "expansionMode": "complete" }` for complete expansion |
+| `delivery` | Optional delivery settings; `comicMode` defaults to `illustrated`, and `expansionMode` defaults to `standard` |
 | `article` | Reading-view content and source metadata |
 | `facts` | Stable claim-to-source ledger |
 | `onePage` | Responsive summary modules |
@@ -56,11 +56,15 @@ Each fact requires:
 - public `sourceUrl` that supports that exact claim for public pages, or `sourceRef: "source-snapshot"` for pasted text;
 - status: `verified`, `source-claimed`, or `unverified`.
 
-Fact references in article blocks, every one-page metric/item, comic panels, comic pages, visible editorial displays, and legacy illustrated subtitles must point to existing IDs. Fact arrays used by the summary and comic views must be non-empty and contain no duplicate IDs.
+Fact references in article blocks, every one-page metric/item, comic panels, comic pages, visible editorial displays, and illustrated subtitles must point to existing IDs. Fact arrays used by the summary and comic views must be non-empty and contain no duplicate IDs.
 
 ## Delivery mode
 
-Omitting `delivery` is equivalent to `expansionMode: "standard"`. Set `delivery.expansionMode` to `complete` when the user asks for `完整展开`, complete content, no omissions, or more expansion. Complete mode requires every fact ID in the ledger to appear in at least one one-page metric/item and in at least one visible delivered comic panel. Validation fails with exact missing fact IDs when either view is incomplete.
+Omitting `delivery` is equivalent to `{ "expansionMode": "standard", "comicMode": "illustrated" }`.
+
+- Set `delivery.expansionMode` to `complete` when the user asks for `完整展开`, complete content, no omissions, or more expansion. Complete mode requires every fact ID in the ledger to appear in at least one one-page metric/item and in at least one visible delivered comic panel. Validation fails with exact missing fact IDs when either view is incomplete.
+- Keep `delivery.comicMode: "illustrated"` for the default true-comic output. Every comic page must then use the image format.
+- Set `delivery.comicMode: "editorial"` only as an explicit whole-comic fallback when image generation is unsafe, unavailable, or fails after bounded retries. Every comic page must then use the editorial format. Mixed modes are invalid.
 
 ## Markdown
 
@@ -76,11 +80,11 @@ Keep modules scannable. Move long explanations to the reading view.
 
 `panels` is always present. Each panel requires a unique `panel-*` ID, `scene`, `dialogue`, `narration`, and non-empty `factIds`. Across all delivered pages, panel IDs must cover the storyboard exactly once and in order.
 
-The default editorial format adds `display` to each visible panel. `display.kind` is one of `caption`, `bubble`, `thought`, `shout`, `sfx`, `stat`, `list`, `diagram`, `takeaway`, or `prose`; `tone` is optionally `light`, `dark`, `speed`, `focus`, or `halftone`. `text` is required. `kicker`, `detail`, and `mark` are optional. `list` and `diagram` require non-empty `items`.
+The default illustrated format requires a safe local `image`, descriptive `alt`, caption, non-empty fact IDs, ordered `panelIds`, and exactly one escaped HTML subtitle per listed panel. A strict regular image sheet may add `panelGrid` with integer `columns` and `rows` from 1 through 5 whose product equals `panelIds.length`. Illustrated assets must depict scene-based comic storytelling; text-card artwork is a visual-quality failure.
+
+The explicit editorial fallback adds `display` to each visible panel. `display.kind` is one of `caption`, `bubble`, `thought`, `shout`, `sfx`, `stat`, `list`, `diagram`, `takeaway`, or `prose`; `tone` is optionally `light`, `dark`, `speed`, `focus`, or `halftone`. `text` is required. `kicker`, `detail`, and `mark` are optional. `list` and `diagram` require non-empty `items`.
 
 An editorial page requires `format: "editorial"`, a `number` in `NN/NN` form, caption, non-empty fact IDs, ordered `panelIds`, and non-empty `rows`. A row uses `layout` plus ordered `panelIds`. Layouts are `single` (1), `split` (2), `wide-left` (2), `wide-right` (2), `triptych` (3), and `focus-left` (3). Flattened row IDs must equal the page's `panelIds` exactly. Editorial pages omit `image`, `alt`, `subtitles`, and `panelGrid`.
-
-Legacy illustrated pages remain supported. They require a safe local `image`, descriptive `alt`, caption, non-empty fact IDs, ordered `panelIds`, and exactly one escaped HTML subtitle per listed panel. A strict regular image sheet may add `panelGrid` with integer `columns` and `rows` from 1 through 5 whose product equals `panelIds.length`.
 
 ## Theme
 
@@ -88,4 +92,4 @@ Choose catalog values for `articleTheme`, `onePageLayout`, `illustrationStyle`, 
 
 ## Source manifest assets
 
-Record the same source type as `article.source`. Public manifests require `originalUrl`; pasted-text manifests require `sourceType: "pasted-text"` and a matching `sourceName`, and must omit `originalUrl`. Record exactly the images referenced by article blocks and legacy illustrated comic pages—no orphan files—with a safe `assets/` path, `kind`, capture time, and purpose. Editorial comic pages add no asset entry. Original assets require a public `sourceUrl`. AI assets require `generationMethod: "native-imagegen"` and `createdFor` equal to `article.slug`; `legacy-unverified` exists only for migration review and cannot pass a final build. The builder records SHA-256, byte size, format, MIME type, width, and height after inspecting each local file. Only PNG, JPEG, and WebP are accepted. Do not store cookies, signed URLs, API keys, prompts containing secrets, or local browser profile paths.
+Record the same source type as `article.source`. Public manifests require `originalUrl`; pasted-text manifests require `sourceType: "pasted-text"` and a matching `sourceName`, and must omit `originalUrl`. Record exactly the images referenced by article blocks and illustrated comic pages—no orphan files—with a safe `assets/` path, `kind`, capture time, and purpose. Editorial fallback pages add no asset entry. Original assets require a public `sourceUrl`. AI assets require `generationMethod: "native-imagegen"` and `createdFor` equal to `article.slug`; `legacy-unverified` exists only for migration review and cannot pass a final build. The builder records SHA-256, byte size, format, MIME type, width, and height after inspecting each local file. Only PNG, JPEG, and WebP are accepted. Do not store cookies, signed URLs, API keys, prompts containing secrets, or local browser profile paths.

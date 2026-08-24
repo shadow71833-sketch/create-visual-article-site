@@ -21,7 +21,7 @@
 
 | Style | Rules |
 |---|---|
-| `editorial-newsprint` | Default HTML/CSS editorial comic: hard black rules, irregular rows, speech shapes, oversized sound effects, statistic panels, halftone accents, and concise page-ending hooks; no generated art required |
+| `editorial-newsprint` | Explicit HTML/CSS fallback: hard black rules, irregular rows, speech shapes, oversized sound effects, statistic panels, halftone accents, and concise page-ending hooks; no generated art required |
 | `clear-line` | Even contours, readable silhouettes, limited texture |
 | `manga-ink` | Dynamic black shapes and expressive pacing |
 | `ink-wash` | Brush economy, negative space, restrained dialogue |
@@ -50,6 +50,6 @@
 
 ## Image-generation prompt requirements
 
-These requirements apply only to optional article illustrations or an explicitly requested illustrated-comic branch. The default `editorial-newsprint` comic is semantic HTML/CSS and needs no image-generation prompt.
+These requirements apply to the default illustrated comic and to optional article illustrations. The visual-profile selector automatically chooses a comic style and layout from article signals; do not overwrite that result with a global default or force the user to choose. `editorial-newsprint` remains available only for an explicit editorial fallback or user override.
 
-When image generation is used, state the visual purpose, factual constraints, composition, style, palette, language, aspect ratio, recurring-character details, and prohibited inventions. Favor little or no on-image text. Put exact facts and long explanations in HTML captions below the artwork. For a strict regular grid, request consistent gutters and declare the matching `panelGrid`; do not reserve artwork space for text overlays because captions render outside the image.
+When image generation is used, state the visual purpose, factual constraints, composition, selected style, palette, language, aspect ratio, recurring-character details, and prohibited inventions. Require characters or concrete visual subjects, environments, actions, expressions, shot variation, and continuity appropriate to the story. Reject prompts whose main composition is headings, cards, dashboards, diagrams, or decorative typography. Favor little or no on-image text. Put exact facts and long explanations in HTML subtitles below the artwork. For a strict regular grid, request consistent gutters and declare the matching `panelGrid`; do not reserve artwork space for text overlays because captions render outside the image.

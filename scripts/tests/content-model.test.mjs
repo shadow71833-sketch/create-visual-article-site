@@ -33,6 +33,7 @@ function pastedTextPackage() {
 
 function editorialPackage() {
   const value = structuredClone(fixture);
+  value.delivery = {comicMode: "editorial"};
   value.comic.panels[0].display = {
     kind: "thought",
     tone: "light",
@@ -55,6 +56,22 @@ function editorialPackage() {
 test("accepts a complete article package", () => {
   assert.doesNotThrow(() => assertArticlePackage(structuredClone(fixture)));
   assert.deepEqual(validateArticlePackage(structuredClone(fixture)), []);
+});
+
+test("defaults to illustrated comics and requires explicit editorial fallback", () => {
+  const implicitEditorial = editorialPackage();
+  delete implicitEditorial.delivery;
+  assert.ok(validateArticlePackage(implicitEditorial).some((error) => error.path === "comic.pages[0].format" && /illustrated/.test(error.message)));
+
+  assert.deepEqual(validateArticlePackage(editorialPackage()), []);
+
+  const editorialWithImage = structuredClone(fixture);
+  editorialWithImage.delivery = {comicMode: "editorial"};
+  assert.ok(validateArticlePackage(editorialWithImage).some((error) => error.path === "comic.pages[0].format" && /editorial/.test(error.message)));
+
+  const invalidMode = structuredClone(fixture);
+  invalidMode.delivery = {comicMode: "text-cards"};
+  assert.ok(validateArticlePackage(invalidMode).some((error) => error.path === "delivery.comicMode"));
 });
 
 test("requires full one-page and comic fact coverage in complete-expansion mode", () => {

@@ -182,6 +182,7 @@ test("renders escaped Xiaohu-style editorial comics without bitmap dependencies"
   const outputPath = path.join(root, "site");
   try {
     const articlePackage = JSON.parse(await readFile(fixtureUrl, "utf8"));
+    articlePackage.delivery = {comicMode: "editorial"};
     articlePackage.comic.panels[0].display = {
       kind: "thought",
       tone: "speed",

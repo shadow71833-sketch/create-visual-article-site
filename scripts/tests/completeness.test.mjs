@@ -12,6 +12,7 @@ const snapshot = JSON.parse(await readFile(snapshotUrl, "utf8"));
 
 function editorialPackage() {
   const value = structuredClone(fixture);
+  value.delivery = {comicMode: "editorial"};
   value.comic.panels[0].display = {
     kind: "takeaway",
     text: "错误必须回到修复循环。",

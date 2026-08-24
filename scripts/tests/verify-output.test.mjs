@@ -39,6 +39,7 @@ async function writeEditorialInput(root) {
   const inputRoot = path.join(root, "editorial-input");
   await mkdir(inputRoot, {recursive: true});
   const articlePackage = JSON.parse(await readFile(fixtureUrl, "utf8"));
+  articlePackage.delivery = {comicMode: "editorial"};
   articlePackage.comic.panels[0].display = {
     kind: "takeaway",
     tone: "halftone",

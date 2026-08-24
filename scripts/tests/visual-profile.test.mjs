@@ -32,9 +32,23 @@ test("selects a deterministic research profile", () => {
   assert.deepEqual(first, second);
   assert.equal(first.articleTheme, "research-ledger");
   assert.equal(first.onePageLayout, "linear-progression");
-  assert.equal(first.comicStyle, "editorial-newsprint");
-  assert.equal(first.comicLayout, "mixed-panels");
+  assert.equal(first.comicStyle, "clear-line");
+  assert.equal(first.comicLayout, "standard-page");
   assert.deepEqual(validateVisualProfile(first), []);
+});
+
+test("auto-selects varied comic styles and layouts from article signals", () => {
+  const profiles = [
+    selectVisualProfile({articleType: "research", density: "high"}),
+    selectVisualProfile({articleType: "product", tone: "energetic"}),
+    selectVisualProfile({articleType: "policy", hasComparisons: false}),
+    selectVisualProfile({articleType: "nature", hasTimeline: false}),
+    selectVisualProfile({articleType: "technology", tone: "calm"}),
+  ];
+
+  assert.ok(new Set(profiles.map(({comicStyle}) => comicStyle)).size >= 4);
+  assert.ok(new Set(profiles.map(({comicLayout}) => comicLayout)).size >= 3);
+  assert.ok(profiles.every((profile) => validateVisualProfile(profile).length === 0));
 });
 
 test("reports unknown and incompatible choices", () => {

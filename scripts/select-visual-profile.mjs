@@ -112,8 +112,6 @@ export function selectVisualProfile(signals = {}) {
     comicLayout: preset.comicLayout,
     palette: preset.palette,
   };
-  profile.comicStyle = "editorial-newsprint";
-  profile.comicLayout = "mixed-panels";
   if (signals.hasTimeline && articleType === "research") profile.onePageLayout = "linear-progression";
   return profile;
 }

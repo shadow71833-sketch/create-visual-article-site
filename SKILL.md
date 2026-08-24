@@ -1,6 +1,6 @@
 ---
 name: create-visual-article-site
-description: "Convert a current Chrome page, public article URL, pasted article, or Markdown into a secure, source-faithful static article website with three coordinated views: a complete and tidy reading view, a responsive one-page visual summary, and a Xiaohu-style HTML/CSS editorial comic. Use when Codex needs to preserve full long-form content, build an offline or deployable article site, reproduce a 正文/一页纸/秒懂漫画 experience, generate optional supporting illustrations, or package an article as complete Markdown plus verified web assets."
+description: "三视图文章网站生成器。Use this when the user says 三视图、生成三视图、制作三视图或做成三视图, even without naming the skill. Convert a current Chrome page, public article URL, pasted article, or Markdown into a secure, source-faithful static website with 完整正文、一页纸、秒懂漫画. Preserve all source content, generate a responsive summary and source-grounded illustrated comic with subtitles below the artwork, and package verified Markdown plus offline or deployable web assets."
 ---
 
 # Create Visual Article Site
@@ -19,7 +19,7 @@ Build one traceable article package and render three coordinated views from it. 
 - Generate downloadable Markdown from the same normalized blocks as the reading view.
 - Refuse delivery unless source text, sections, tables, code, and media links all reach 100% coverage with zero missing items.
 - Never invoke `codex exec`, unrestricted subprocess agents, or a non-native image-generation wrapper.
-- Use native `imagegen` only for optional article illustrations or an explicitly requested illustrated-comic branch. The default editorial comic requires no generated image. Pause before any image generation when content is confidential, personal, regulated, or contains suspected credentials.
+- Use the native `imagegen` skill directly for the default illustrated comic and for optional article illustrations. Never force every article into one comic style: use the selected visual profile unless the user supplied an override, and do not ask the user to choose a style unless they request control. Pause before any image generation when content is confidential, personal, regulated, or contains suspected credentials. In that case, or when native image generation is unavailable after bounded retries, explicitly set `delivery.comicMode: "editorial"` and report the fallback; never silently substitute text cards for comic art.
 - Write only beneath an explicit, task-specific approved root. Never approve the filesystem root, home directory, or the approved root itself as output. Let the builder create a recoverable backup when output already exists.
 - Do not report completion after any failed validation or visual quality gate.
 
@@ -76,7 +76,7 @@ Use the returned profile unless the user explicitly chose a style. Validate any 
 - article identity: [references/article-themes.md](references/article-themes.md)
 - one-page structure: [references/one-page-layouts.md](references/one-page-layouts.md)
 - illustration and comic direction: [references/image-styles.md](references/image-styles.md)
-- editorial comic grammar: [references/editorial-comic.md](references/editorial-comic.md)
+- editorial fallback grammar: [references/editorial-comic.md](references/editorial-comic.md)
 - curated combinations: [references/compatibility-presets.md](references/compatibility-presets.md)
 
 ### 4. Build the fact ledger before visual summaries
@@ -107,7 +107,7 @@ Generate visuals only when they improve explanation.
 
 - **Article illustrations**: select concepts, systems, comparisons, or mechanisms that prose alone explains poorly. When the source supports a process with three or more meaningful stages, add one source-faithful semantic illustration if it materially clarifies the mechanism. Avoid decorative hero images with no information role, and keep long explanations in HTML captions.
 - **One-page view**: render with HTML/CSS. Do not generate a bitmap infographic containing the complete summary text. When six or more distinct facts support different relationships, use at least three fitting module types such as `process`, `comparison`, and `sources`; never invent padding facts merely to increase variety. Keep module type differences visible without breaking the page into isolated cards. Retain fact IDs in `content.json` and reports, but never render internal fact IDs or fact chips into the consumer HTML.
-- **Comic**: use the editorial HTML/CSS format in [references/editorial-comic.md](references/editorial-comic.md) by default. Build a setup–turn–escalation–resolution arc with short text, irregular trusted row layouts, speech shapes, statistics, visual emphasis, and page-ending hooks. Create 8–12 panels for standard mode and add pages in complete mode. Put at most two material facts in a normal panel and derive every factual phrase from the ledger. Use the illustrated bitmap branch only when the user explicitly requests generated artwork.
+- **Comic**: default to `delivery.comicMode: "illustrated"`. Build a setup–turn–escalation–resolution arc, create 8–12 storyboard panels for standard mode, and add pages in complete mode. Put at most two material facts in a normal panel and derive every factual phrase from the ledger. Use the automatically selected `theme.comicStyle` and `theme.comicLayout`; never overwrite them with one global style. Generate genuine scene-based comic art with characters, environments, actions, expressions, framing, and visual continuity—not posters, dashboards, diagrams, report cards, or typography-led panels. Keep exact narration and dialogue as escaped HTML subtitles below each matching panel image rather than baking long copy into the artwork.
 
 #### Complete expansion command
 
@@ -118,13 +118,13 @@ In complete mode:
 - keep reading-view source coverage at 100% with zero missing blocks;
 - require one-page and comic fact coverage to equal 100%;
 - expand one-page modules, comic panels, and comic pages until every ledger fact appears in both summary views;
-- use as many readable 3–5-panel editorial pages as required; do not enforce a global panel or page cap;
+- use as many readable 3–5-panel illustrated pages as required; do not enforce a global panel or page cap;
 - never attach a fact ID to unrelated copy merely to satisfy coverage—the visible editorial panel or illustrated subtitle must actually express the fact;
 - allow condensed wording in one-page and comic views, but preserve every material number, limitation, decision, risk, and action item.
 
-Treat `comic.panels` as the storyboard and `comic.pages` as the delivered comic. A completed default page uses `format: "editorial"`, trusted `rows`, and panel `display` objects. The combined rows must cover every panel exactly once and in order. Keep fact IDs internal; never render panel or fact identifiers into consumer HTML. Inspect desktop and mobile screenshots to confirm that the result reads as a paced comic rather than a report split into bordered cards.
+Treat `comic.panels` as the storyboard and `comic.pages` as the delivered comic. A completed default page uses `format: "image"`, a safe local `image`, ordered `panelIds`, and exactly one ordered subtitle per panel. Keep fact IDs internal; never render panel or fact identifiers into consumer HTML. Inspect desktop and mobile screenshots to confirm that the artwork carries the story and that subtitles appear immediately below the matching art.
 
-For an explicitly requested illustrated comic, use native `imagegen` directly. Put the style, palette, composition, language, factual constraints, prohibited inventions, and required visual continuity in every prompt. Generate a character/reference sheet first when two or more pages reuse a character. Save generated files under `assets/comic/`, record native-imagegen provenance, and keep exact factual wording in escaped HTML subtitles below the art. Legacy `panelGrid` image sheets remain supported for existing packages.
+Use native `imagegen` directly for the illustrated comic. Put the selected style, palette, composition, language, factual constraints, prohibited inventions, and required visual continuity in every prompt. Generate a character/reference sheet first when two or more pages reuse a character. Prefer little or no text inside the bitmap; save generated files under `assets/comic/`, record native-imagegen provenance, and keep exact factual wording in escaped HTML subtitles below the art. Legacy `panelGrid` image sheets remain supported for existing packages. If image generation is unsafe, unavailable, or still fails after at most two corrected retries, set `delivery.comicMode: "editorial"` before building and follow [references/editorial-comic.md](references/editorial-comic.md); do not mix image and editorial page formats in one package.
 
 For optional article illustrations, save files under `assets/illustrations/`, record `kind: "ai-generated"`, `generationMethod: "native-imagegen"`, and `createdFor: <article.slug>`, and never reuse an AI image from another task. Regenerate wrong bitmap text rather than patching it.
 
@@ -158,7 +158,7 @@ node <skill-dir>/scripts/verify-output.mjs \
   --output <approved-output-directory>
 ```
 
-Require both `verification-report.json` and `completeness-report.json` to report `ok: true`. The verifier re-renders HTML, Markdown, theme CSS, manifests, and completeness from source data; edited or stale artifacts fail. Read [references/quality-gates.md](references/quality-gates.md) and inspect all three tabs at desktop and mobile widths. Check continuous reading rhythm, long titles, wide tables, media links, editorial comic pacing, source links, keyboard tabs, Markdown copy/download, reduced motion, and print layout.
+Require both `verification-report.json` and `completeness-report.json` to report `ok: true`. The verifier re-renders HTML, Markdown, theme CSS, manifests, and completeness from source data; edited or stale artifacts fail. Read [references/quality-gates.md](references/quality-gates.md) and inspect all three tabs at desktop and mobile widths. Check continuous reading rhythm, long titles, wide tables, media links, illustrated comic storytelling, source links, keyboard tabs, Markdown copy/download, reduced motion, and print layout.
 
 For v1 inputs, migrate into a new review directory first. Migration never proves legacy AI provenance and therefore cannot bypass final verification:
 
@@ -170,7 +170,7 @@ node <skill-dir>/scripts/migrate-v1-to-v2.mjs \
   --output <new-review-directory>
 ```
 
-Before handoff, record a three-view acceptance matrix: reading section count and completeness coverage, one-page module count and order, and comic page/panel counts plus format-specific evidence. The consumer HTML must contain no evidence rail or internal identifiers. Editorial pages require exact row-to-panel coverage, readable mobile order, at least three display kinds and three row layouts for multi-page work, and no image dependency. Illustrated pages require local image loading and subtitle-to-panel parity. In complete mode, require one-page and comic fact coverage to equal 100%.
+Before handoff, record a three-view acceptance matrix: reading section count and completeness coverage, one-page module count and order, and comic page/panel counts plus format-specific evidence. The consumer HTML must contain no evidence rail or internal identifiers. Default illustrated pages require local image loading, subtitle-to-panel parity, coherent recurring characters, and scene-based art that is recognizably a comic rather than a text card. Explicit editorial fallback pages require exact row-to-panel coverage, readable mobile order, at least three display kinds and three row layouts for multi-page work, and no image dependency. In complete mode, require one-page and comic fact coverage to equal 100%.
 
 When browser tools are available, open the local `index.html` and capture screenshots at approximately 1440 px and 375 px widths. Fix overflow and hierarchy defects before handoff.
 
@@ -197,8 +197,9 @@ Link the generated `index.html`, `article.md`, and `verification-report.json`. N
 | Completeness is below an approved threshold | Restore missing source blocks; never lower the threshold or relabel a summary as complete |
 | Confidential or credential-like content appears | Pause before network or image-generation actions |
 | Original image fails safety checks | Skip it, preserve the public source link, and record the reason |
-| Optional image generation fails | Correct the prompt and retry at most twice; keep the editorial comic and reading views intact and report the missing optional visual |
-| Editorial comic reads like a report | Shorten panels, add contrast and turns, vary row layouts, and rerun visual inspection |
+| Default comic image generation fails | Correct the prompt and retry at most twice; if it still fails, explicitly switch the whole comic to `delivery.comicMode: "editorial"`, report the fallback, and rerun every gate |
+| Illustrated comic reads like a poster, dashboard, or text card | Regenerate with concrete characters, actions, environments, shot changes, expressions, and reduced bitmap text |
+| Editorial fallback reads like a report | Shorten panels, add contrast and turns, vary row layouts, and rerun visual inspection |
 | Comic pages are empty or do not cover every panel | Treat verification as failed; add the missing editorial rows or illustrated subtitles before handoff |
 | Complete mode reports missing one-page or comic facts | Add truthful modules, visible comic panels, and pages until both presentation coverage ratios reach 100% |
 | Package validation fails | Correct the exact reported JSON path before building |
@@ -223,5 +224,5 @@ Link the generated `index.html`, `article.md`, and `verification-report.json`. N
 └── assets/
     ├── original/
     ├── illustrations/
-    └── comic/        # only when the illustrated branch is requested
+    └── comic/        # default illustrated comic assets
 ```

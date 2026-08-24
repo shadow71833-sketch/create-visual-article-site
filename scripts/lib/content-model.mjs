@@ -56,9 +56,14 @@ const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const AI_GENERATION_METHODS = new Set(["native-imagegen", "legacy-unverified"]);
 const EXPANSION_MODES = new Set(["standard", "complete"]);
+const COMIC_MODES = new Set(["illustrated", "editorial"]);
 
 export function resolveSourceType(value = {}) {
   return value?.sourceType ?? "public-url";
+}
+
+export function resolveComicMode(value = {}) {
+  return value?.delivery?.comicMode ?? "illustrated";
 }
 
 function validateSourceType(value, pathLabel, errors) {
@@ -262,12 +267,15 @@ export function validateArticlePackage(value) {
   validateTimestamp(value.generatedAt, "generatedAt", errors);
 
   let expansionMode = "standard";
+  let comicMode = "illustrated";
   if (value.delivery !== undefined) {
     if (!value.delivery || typeof value.delivery !== "object" || Array.isArray(value.delivery)) {
       issue(errors, "delivery", "must be an object when provided");
     } else {
-      expansionMode = value.delivery.expansionMode;
+      expansionMode = value.delivery.expansionMode ?? "standard";
+      comicMode = value.delivery.comicMode ?? "illustrated";
       if (!EXPANSION_MODES.has(expansionMode)) issue(errors, "delivery.expansionMode", "must be standard or complete");
+      if (!COMIC_MODES.has(comicMode)) issue(errors, "delivery.comicMode", "must be illustrated or editorial");
     }
   }
 
@@ -411,6 +419,12 @@ export function validateArticlePackage(value) {
       }
       const pageFormat = page?.format ?? "image";
       if (!COMIC_PAGE_FORMATS.has(pageFormat)) issue(errors, `${base}.format`, "must be image or editorial");
+      if (comicMode === "illustrated" && pageFormat !== "image") {
+        issue(errors, `${base}.format`, "must be image when delivery.comicMode is illustrated");
+      }
+      if (comicMode === "editorial" && pageFormat !== "editorial") {
+        issue(errors, `${base}.format`, "must be editorial when delivery.comicMode is editorial");
+      }
       validateString(page?.caption, `${base}.caption`, errors, {allowEmpty: true});
       validateFactIds(page?.factIds, `${base}.factIds`, errors, knownFactIds, {allowEmpty: false});
       if (!Array.isArray(page?.panelIds) || page.panelIds.length === 0) issue(errors, `${base}.panelIds`, "must be a non-empty array");

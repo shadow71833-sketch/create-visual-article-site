@@ -21,5 +21,5 @@ test("declares 三视图 as an implicit invocation phrase", async () => {
   }
   assert.match(openAiMetadata, /allow_implicit_invocation:\s*true/);
   assert.match(openAiMetadata, /用户说“三视图”时自动调用/);
-  assert.equal(packageMetadata.version, "2.1.2");
+  assert.equal(packageMetadata.version, "2.2.0");
 });

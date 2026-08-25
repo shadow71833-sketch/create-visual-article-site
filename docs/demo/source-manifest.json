@@ -1,0 +1,49 @@
+{
+  "sourceType": "pasted-text",
+  "sourceName": "项目原创演示文章",
+  "capturedAt": "2026-08-25T00:00:00.000Z",
+  "assets": [
+    {
+      "path": "assets/comic/character-reference.png",
+      "kind": "ai-generated",
+      "capturedAt": "2026-08-25T00:00:00.000Z",
+      "purpose": "保持两页编辑型漫画中编辑和验证机器人角色、表情与配色连续",
+      "generationMethod": "native-imagegen",
+      "createdFor": "traceable-three-view-pipeline",
+      "sha256": "f265dd995aef5a2eb033d25959154e4e4a80cb73ac277483489b0e5bbda32e8a",
+      "format": "png",
+      "mimeType": "image/png",
+      "bytes": 2052863,
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "path": "assets/comic/page-01.png",
+      "kind": "ai-generated",
+      "capturedAt": "2026-08-25T00:00:00.000Z",
+      "purpose": "呈现采集、规范化和事实映射的前四格原创漫画",
+      "generationMethod": "native-imagegen",
+      "createdFor": "traceable-three-view-pipeline",
+      "sha256": "e7c7160ba72c87fed0e6e754c5da1f042fd47de78cae1b20a2546494797589d6",
+      "format": "png",
+      "mimeType": "image/png",
+      "bytes": 2324378,
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "path": "assets/comic/page-02.png",
+      "kind": "ai-generated",
+      "capturedAt": "2026-08-25T00:00:00.000Z",
+      "purpose": "呈现三视图、六项门禁、安全回退与拒绝失败交付的后四格原创漫画",
+      "generationMethod": "native-imagegen",
+      "createdFor": "traceable-three-view-pipeline",
+      "sha256": "090d674700719dd4b8071170811cccaa1d23197a4d75b78af4e1dd4ac0c8eff5",
+      "format": "png",
+      "mimeType": "image/png",
+      "bytes": 2251269,
+      "width": 1536,
+      "height": 1024
+    }
+  ]
+}

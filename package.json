@@ -1,6 +1,6 @@
 {
   "name": "create-visual-article-site",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -8,6 +8,9 @@
   },
   "scripts": {
     "test": "node --test scripts/tests/*.test.mjs",
-    "validate": "npm test"
+    "demo:build": "node scripts/build-demo.mjs --approved-root . --output docs/demo",
+    "demo:verify": "node scripts/verify-output.mjs --approved-root . --output docs/demo",
+    "repository:validate": "node scripts/validate-repository.mjs",
+    "validate": "npm test && npm run repository:validate && npm run demo:verify"
   }
 }

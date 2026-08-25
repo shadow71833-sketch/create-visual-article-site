@@ -1,0 +1,16 @@
+@page { margin: 16mm; }
+body { background: white !important; }
+.site-header, .reading-progress, .toast, .skip-link { display: none !important; }
+.view-panel[hidden] { display: none !important; }
+.article-shell, .one-page-shell, .comic-shell { width: 100%; margin: 0; display: block; }
+.evidence-rail { position: static; margin-bottom: 1rem; }
+.article-main, .one-page-shell, .comic-page { border: 0; box-shadow: none; }
+.article-hero, .article-body { padding-inline: 0; }
+.article-section, .metric-grid, .one-page-module, .comic-page, .comic-editorial-card, table { break-inside: avoid; }
+.metric-card, .one-page-module, .module-item { box-shadow: none !important; }
+.comic-subtitles { color: white !important; background: #182039 !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+.comic-editorial-card { box-shadow: none !important; }
+.comic-tone-dark, .comic-shout .comic-editorial-bubble, .comic-editorial-mark, .comic-editorial-number { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+a { color: inherit; text-decoration: none; }
+.article-media-link { break-inside: avoid; }
+.article-media-link::after { content: " (" attr(href) ")"; color: #555; font-size: 8pt; overflow-wrap: anywhere; }

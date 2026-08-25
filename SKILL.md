@@ -1,6 +1,6 @@
 ---
 name: create-visual-article-site
-description: "三视图文章网站生成器。Use this when the user says 三视图、生成三视图、制作三视图或做成三视图, even without naming the skill. Convert a current Chrome page, public article URL, pasted article, or Markdown into a secure, source-faithful static website with 完整正文、一页纸、秒懂漫画. Preserve all source content, generate a responsive summary and source-grounded illustrated comic with subtitles below the artwork, and package verified Markdown plus offline or deployable web assets."
+description: "三视图文章网站生成器。Use this when the user says 三视图、生成三视图、制作三视图或做成三视图, even without naming the skill. Convert a current Chrome page, public article URL, PDF, pasted article, or Markdown into a secure, source-faithful static website with 完整正文、一页纸、秒懂漫画. Preserve all source content, generate a responsive summary and source-grounded illustrated comic with subtitles below the artwork, and package verified Markdown plus offline or deployable web assets."
 ---
 
 # Create Visual Article Site

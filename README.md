@@ -9,6 +9,8 @@ Turn a web article, PDF, Markdown file, or pasted source into one verified offli
 
 将网页文章、PDF、Markdown 或粘贴原文转换为一个经过验证的离线内容包，同时交付忠于来源的完整正文、可视化一页纸和基于事实的编辑型漫画。
 
+[Open the live three-view demo / 在线体验三视图](https://shadow71833-sketch.github.io/create-visual-article-site/) · [Download v2.2.0](https://github.com/shadow71833-sketch/create-visual-article-site/releases/download/v2.2.0/create-visual-article-site-v2.2.0.zip) · [SHA-256](https://github.com/shadow71833-sketch/create-visual-article-site/releases/download/v2.2.0/create-visual-article-site-v2.2.0.zip.sha256)
+
 ## See the three views / 查看三视图
 
 ### Reading / 正文
@@ -35,7 +37,7 @@ Turn a web article, PDF, Markdown file, or pasted source into one verified offli
 
 ![Mobile reading view showing responsive navigation and readable content](docs/assets/demo-mobile.png)
 
-[Open the checked-in demo / 打开仓库内演示](docs/demo/index.html)（下载仓库后可离线打开）。
+[Open the live demo / 在线体验](https://shadow71833-sketch.github.io/create-visual-article-site/)，或下载仓库后[离线打开已验证演示](docs/demo/index.html)。
 
 ## Why this exists / 为什么需要它
 
@@ -133,6 +135,17 @@ npm run demo:verify
 ```bash
 npm test
 npm run validate
+```
+
+维护者需要生成版本化发布包时，请使用一次性目录，避免把二进制产物写入仓库工作区：
+
+```bash
+release_root="$(mktemp -d)"
+npm run release:package -- \
+  --repository . \
+  --approved-root "$release_root" \
+  --ref v2.2.0 \
+  --output "$release_root/output"
 ```
 
 贡献前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)，版本变化见 [CHANGELOG.md](CHANGELOG.md)。

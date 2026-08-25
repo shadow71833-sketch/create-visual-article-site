@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "errors": [],
+  "metrics": {
+    "textCoverage": 1,
+    "sectionCoverage": 1,
+    "tableCoverage": 1,
+    "codeCoverage": 1,
+    "mediaCoverage": 1,
+    "sourceCharacters": 836,
+    "matchedCharacters": 836,
+    "sourceSections": 4,
+    "matchedSections": 4,
+    "onePageFactCoverage": 1,
+    "comicFactCoverage": 1
+  },
+  "missing": [],
+  "presentation": {
+    "requiredFactCount": 8,
+    "onePageFactCoverage": 1,
+    "comicFactCoverage": 1,
+    "missingOnePageFactIds": [],
+    "missingComicFactIds": []
+  }
+}

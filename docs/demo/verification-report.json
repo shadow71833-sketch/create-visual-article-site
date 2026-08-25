@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "metrics": {
+    "views": 3,
+    "facts": 8,
+    "sections": 4,
+    "comicPages": 2,
+    "comicPanels": 8,
+    "comicSubtitles": 8,
+    "textCoverage": 1,
+    "sectionCoverage": 1,
+    "tableCoverage": 1,
+    "codeCoverage": 1,
+    "mediaCoverage": 1,
+    "onePageFactCoverage": 1,
+    "comicFactCoverage": 1
+  }
+}

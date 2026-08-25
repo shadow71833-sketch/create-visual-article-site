@@ -1,0 +1,661 @@
+{
+  "version": 2,
+  "generatedAt": "2026-08-25T00:00:00.000Z",
+  "delivery": {
+    "expansionMode": "complete",
+    "comicMode": "illustrated"
+  },
+  "article": {
+    "slug": "traceable-three-view-pipeline",
+    "title": "从长文章到可验证三视图：一条可追踪的内容生产线",
+    "subtitle": "用同一份事实账本连接完整阅读、一页纸与编辑型漫画",
+    "source": {
+      "sourceType": "pasted-text",
+      "name": "项目原创演示文章",
+      "verified": true
+    },
+    "readingMinutes": 6,
+    "summary": "可靠的内容转换不是把长文压短，而是让完整原文、视觉摘要和漫画各司其职，并在交付前共同通过内容、安全与事实覆盖检查。",
+    "keyPoints": [
+      "阅读视图保留完整结构，一页纸负责扫描，漫画负责叙事",
+      "采集、规范化、事实映射和输出验证组成可追踪流程",
+      "任何不完整、不安全或验证失败的结果都不能静默交付"
+    ],
+    "sections": [
+      {
+        "id": "different-jobs",
+        "title": "为什么摘要不能冒充原文",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "阅读、摘要和漫画承担不同任务：阅读视图要完整保留原文结构与上下文，一页纸帮助快速扫描重点，漫画则用场景和角色重组理解路径。摘要不能替代原文，漫画也不能成为新的事实来源。",
+            "factIds": [
+              "fact-1"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "三个视图必须共享同一份事实账本。这样，读者既能快速理解，也能回到完整内容核对每一个重要结论。",
+            "factIds": [
+              "fact-1"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fact-flow",
+        "title": "同一份事实如何流向三个视图",
+        "blocks": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              "采集：先保存标题、段落、列表、表格、代码和媒体链接的来源快照。",
+              "规范化：移除导航等页面噪声，但不改写被保留内容的含义与顺序。",
+              "映射事实：把八条事实逐一连接到一页纸模块和漫画分镜。",
+              "验证输出：重新计算内容完整度、事实覆盖率、资产安全和离线文件一致性。"
+            ],
+            "factIds": [
+              "fact-2"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "构建器只接受版本化数据包，不接受远程 HTML 字符串；远程页面必须先转换为经过检查的结构化快照。",
+            "factIds": [
+              "fact-4"
+            ]
+          },
+          {
+            "type": "image",
+            "src": "assets/comic/character-reference.png",
+            "alt": "蓝色夹克编辑与橙色验证机器人的角色参考图，展示多角度、表情和扫描状态",
+            "caption": "角色参考图用于保持两页漫画中的人物与配色连续。",
+            "factIds": [
+              "fact-5"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "图片必须保存为安全的本地资产，并记录生成方式、文件哈希、格式、尺寸和字节数，成品页面不依赖远程图片。",
+            "factIds": [
+              "fact-5"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "release-checks",
+        "title": "发布前的六项检查",
+        "blocks": [
+          {
+            "type": "table",
+            "caption": "交付门禁",
+            "headers": [
+              "检查项",
+              "通过条件"
+            ],
+            "rows": [
+              [
+                "文本",
+                "来源文字完整保留，缺失项为零"
+              ],
+              [
+                "章节",
+                "标题和顺序与来源快照一致"
+              ],
+              [
+                "表格",
+                "表头、行列和单元格内容完整"
+              ],
+              [
+                "代码",
+                "代码块按原样进入阅读视图"
+              ],
+              [
+                "媒体链接",
+                "保留为安全链接，不加载远程可执行内容"
+              ],
+              [
+                "事实覆盖",
+                "一页纸和漫画均覆盖全部事实"
+              ]
+            ],
+            "factIds": [
+              "fact-3"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "完整展开模式要求一页纸与漫画对事实账本达到百分之百覆盖；任何事实缺口都会让验证失败。",
+            "factIds": [
+              "fact-6"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "explainable-failures",
+        "title": "失败也必须可解释",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "如果提取不完整，系统必须指出缺失的章节或内容块；如果媒体不安全，系统必须阻止它进入成品并说明原因。",
+            "factIds": [
+              "fact-8"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "如果图片生成不可用、不安全或在有限重试后仍失败，必须显式切换为整套编辑型漫画回退，不能混用两种漫画交付模式。",
+            "factIds": [
+              "fact-7"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "如果最终验证未通过，构建流程必须拒绝交付，并保留可定位的错误信息供下一轮修正。",
+            "factIds": [
+              "fact-8"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "facts": [
+    {
+      "id": "fact-1",
+      "claim": "阅读视图保留完整原文结构，一页纸负责快速扫描，漫画负责场景化理解，三个视图共享同一事实账本。",
+      "sourceRef": "source-snapshot",
+      "status": "source-claimed"
+    },
+    {
+      "id": "fact-2",
+      "claim": "可追踪内容生产线依次执行采集、规范化、事实映射和输出验证四个阶段。",
+      "sourceRef": "source-snapshot",
+      "status": "source-claimed"
+    },
+    {
+      "id": "fact-3",
+      "claim": "发布前必须检查文本、章节、表格、代码、媒体链接和事实覆盖六个方面。",
+      "sourceRef": "source-snapshot",
+      "status": "source-claimed"
+    },
+    {
+      "id": "fact-4",
+      "claim": "构建器不接受远程 HTML 字符串，只接受经过检查的版本化结构化数据包。",
+      "sourceRef": "source-snapshot",
+      "status": "source-claimed"
+    },
+    {
+      "id": "fact-5",
+      "claim": "成品图片必须是记录了生成方式和文件元数据的安全本地资产，页面不依赖远程图片。",
+      "sourceRef": "source-snapshot",
+      "status": "source-claimed"
+    },
+    {
+      "id": "fact-6",
+      "claim": "完整展开模式要求一页纸和漫画都对事实账本达到百分之百覆盖。",
+      "sourceRef": "source-snapshot",
+      "status": "source-claimed"
+    },
+    {
+      "id": "fact-7",
+      "claim": "图片生成不可用、不安全或有限重试后仍失败时，必须显式使用整套编辑型漫画回退。",
+      "sourceRef": "source-snapshot",
+      "status": "source-claimed"
+    },
+    {
+      "id": "fact-8",
+      "claim": "提取缺失和验证错误必须可定位，最终验证失败的输出必须被拒绝交付。",
+      "sourceRef": "source-snapshot",
+      "status": "source-claimed"
+    }
+  ],
+  "onePage": {
+    "eyebrow": "可验证内容生产线",
+    "headline": "不是把长文压短，而是让三个视图共享同一份事实",
+    "deck": "从来源快照到离线网站，每一步都留下可复算的内容、事实与资产证据。",
+    "metrics": [
+      {
+        "value": "3 个",
+        "label": "互补视图",
+        "note": "完整阅读、快速扫描、场景化漫画",
+        "factIds": [
+          "fact-1"
+        ]
+      },
+      {
+        "value": "4 阶段",
+        "label": "可追踪流程",
+        "note": "采集、规范化、映射、验证",
+        "factIds": [
+          "fact-2"
+        ]
+      },
+      {
+        "value": "6 项",
+        "label": "发布检查",
+        "note": "内容、结构、媒体与事实覆盖",
+        "factIds": [
+          "fact-3"
+        ]
+      },
+      {
+        "value": "100%",
+        "label": "完整模式事实覆盖",
+        "note": "一页纸与漫画都不能遗漏事实",
+        "factIds": [
+          "fact-6"
+        ]
+      }
+    ],
+    "modules": [
+      {
+        "id": "overview",
+        "type": "cards",
+        "title": "三个视图，各司其职",
+        "items": [
+          {
+            "title": "完整阅读",
+            "body": "保留原文结构和上下文，作为核对事实的落点。",
+            "factIds": [
+              "fact-1"
+            ]
+          },
+          {
+            "title": "一页纸与漫画",
+            "body": "一个负责扫描，一个负责场景化理解，但都不能发明新事实。",
+            "factIds": [
+              "fact-1"
+            ]
+          },
+          {
+            "title": "受控输入",
+            "body": "只处理版本化结构数据，不把远程 HTML 直接带入构建器。",
+            "factIds": [
+              "fact-4"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "process",
+        "type": "process",
+        "title": "四阶段事实流",
+        "items": [
+          {
+            "title": "1. 采集",
+            "body": "先冻结标题、内容块和媒体链接的来源快照。",
+            "factIds": [
+              "fact-2"
+            ]
+          },
+          {
+            "title": "2. 规范化",
+            "body": "清理页面噪声，同时保持内容含义和顺序。",
+            "factIds": [
+              "fact-2"
+            ]
+          },
+          {
+            "title": "3. 映射事实",
+            "body": "把每条事实连接到一页纸模块和漫画分镜。",
+            "factIds": [
+              "fact-2"
+            ]
+          },
+          {
+            "title": "4. 验证输出",
+            "body": "复算完整度、事实覆盖、资产安全和文件一致性。",
+            "factIds": [
+              "fact-2"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "coverage",
+        "type": "comparison",
+        "title": "覆盖门禁",
+        "items": [
+          {
+            "title": "六项检查",
+            "body": "逐项核对文本、章节、表格、代码、媒体链接与事实覆盖。",
+            "factIds": [
+              "fact-3"
+            ]
+          },
+          {
+            "title": "完整模式",
+            "body": "一页纸和漫画都必须覆盖事实账本中的全部八条事实。",
+            "factIds": [
+              "fact-6"
+            ]
+          },
+          {
+            "title": "本地资产",
+            "body": "页面只引用已检查且记录哈希、格式、尺寸和字节数的本地图片。",
+            "factIds": [
+              "fact-5"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "failure-modes",
+        "type": "risks",
+        "title": "失败路径必须显式",
+        "items": [
+          {
+            "title": "提取或验证失败",
+            "body": "指出具体缺失或错误；验证未通过时拒绝交付。",
+            "factIds": [
+              "fact-8"
+            ]
+          },
+          {
+            "title": "媒体不安全",
+            "body": "阻止远程或未检查的图片进入离线成品。",
+            "factIds": [
+              "fact-5"
+            ]
+          },
+          {
+            "title": "图片生成失败",
+            "body": "有限重试后显式切换整套编辑型漫画，不混合交付模式。",
+            "factIds": [
+              "fact-7"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sources",
+        "type": "sources",
+        "title": "唯一事实锚点",
+        "items": [
+          {
+            "title": "项目原创演示文章",
+            "body": "来源快照是阅读、一页纸和漫画共用的证据起点，不生成虚构来源链接。",
+            "factIds": [
+              "fact-1",
+              "fact-4"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "comic": {
+    "title": "八格走完一条可验证内容生产线",
+    "panels": [
+      {
+        "id": "panel-1",
+        "scene": "蓝色夹克编辑收到一篇包含段落、表格和代码块的长文章，橙色验证机器人打开记录器。",
+        "dialogue": "先保留完整内容，再谈怎么讲得更快。",
+        "narration": "阅读、一页纸与漫画从一开始就被分配了不同任务。",
+        "factIds": [
+          "fact-1"
+        ]
+      },
+      {
+        "id": "panel-2",
+        "scene": "编辑把完整文章放入透明采集托盘，导航与广告噪声落在托盘之外。",
+        "dialogue": "第一步，冻结来源快照。",
+        "narration": "采集阶段保存内容，页面噪声不进入事实源。",
+        "factIds": [
+          "fact-2"
+        ]
+      },
+      {
+        "id": "panel-3",
+        "scene": "机器人把段落、列表、表格、代码和媒体链接排入有序账本。",
+        "dialogue": "只整理顺序，不改写含义。",
+        "narration": "规范化发生在结构层，远程 HTML 不会成为构建输入。",
+        "factIds": [
+          "fact-2",
+          "fact-4"
+        ]
+      },
+      {
+        "id": "panel-4",
+        "scene": "编辑把八枚发光事实令牌从账本连接到阅读、一页纸和漫画三扇门。",
+        "dialogue": "每条事实都要在三个出口可追踪。",
+        "narration": "事实映射让三个视图共享证据，而不是各说各话。",
+        "factIds": [
+          "fact-1",
+          "fact-2"
+        ]
+      },
+      {
+        "id": "panel-5",
+        "scene": "三扇门打开，分别出现完整阅读页、紧凑流程图和连贯场景漫画，并共同连接到来源账本。",
+        "dialogue": "视图不同，事实不变。",
+        "narration": "三个视图完成不同表达任务，图片则作为受检本地资产交付。",
+        "factIds": [
+          "fact-1",
+          "fact-5"
+        ]
+      },
+      {
+        "id": "panel-6",
+        "scene": "机器人依次检查代表文本、章节、表格、代码、媒体链接和事实覆盖的六只实体仪表。",
+        "dialogue": "六项全绿，事实覆盖也必须完整。",
+        "narration": "完整模式要求一页纸和漫画都达到百分之百事实覆盖。",
+        "factIds": [
+          "fact-3",
+          "fact-6"
+        ]
+      },
+      {
+        "id": "panel-7",
+        "scene": "盾牌挡住不安全远程图片，本地图片安全通过；失败的图片生成器旁亮起编辑型漫画回退路线。",
+        "dialogue": "不安全就拦截，生成失败就明确回退。",
+        "narration": "安全本地资产与整套编辑型回退都是显式规则。",
+        "factIds": [
+          "fact-5",
+          "fact-7"
+        ]
+      },
+      {
+        "id": "panel-8",
+        "scene": "编辑和机器人只给通过全部检查的本地网站包盖章，不完整的包被留在门外并附有错误清单。",
+        "dialogue": "验证没过，就不交付。",
+        "narration": "失败必须可定位，未通过验证的输出必须被拒绝。",
+        "factIds": [
+          "fact-8"
+        ]
+      }
+    ],
+    "pages": [
+      {
+        "id": "comic-page-1",
+        "format": "image",
+        "image": "assets/comic/page-01.png",
+        "alt": "四格漫画：编辑接收长文、保存来源、机器人整理结构并把八条事实连接到三个视图",
+        "caption": "第一阶段：从完整来源到三个视图共用的事实账本。",
+        "factIds": [
+          "fact-1",
+          "fact-2",
+          "fact-4"
+        ],
+        "panelIds": [
+          "panel-1",
+          "panel-2",
+          "panel-3",
+          "panel-4"
+        ],
+        "panelGrid": {
+          "columns": 2,
+          "rows": 2
+        },
+        "subtitles": [
+          {
+            "panelId": "panel-1",
+            "kind": "narration",
+            "text": "阅读保留完整原文；一页纸和漫画各司其职。",
+            "factIds": [
+              "fact-1"
+            ]
+          },
+          {
+            "panelId": "panel-2",
+            "kind": "narration",
+            "text": "采集先冻结来源快照，再清理页面噪声。",
+            "factIds": [
+              "fact-2"
+            ]
+          },
+          {
+            "panelId": "panel-3",
+            "kind": "narration",
+            "text": "规范化只整理结构，不把 <script> 或远程 HTML 带进构建器。",
+            "factIds": [
+              "fact-2",
+              "fact-4"
+            ]
+          },
+          {
+            "panelId": "panel-4",
+            "kind": "narration",
+            "text": "八条事实从同一账本流向三个视图。",
+            "factIds": [
+              "fact-1",
+              "fact-2"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "comic-page-2",
+        "format": "image",
+        "image": "assets/comic/page-02.png",
+        "alt": "四格漫画：三个视图打开、机器人检查六项门禁、安全资产与编辑型回退生效，最终只交付验证通过的网站包",
+        "caption": "第二阶段：完成六项检查，并让每种失败都有明确出口。",
+        "factIds": [
+          "fact-1",
+          "fact-3",
+          "fact-5",
+          "fact-6",
+          "fact-7",
+          "fact-8"
+        ],
+        "panelIds": [
+          "panel-5",
+          "panel-6",
+          "panel-7",
+          "panel-8"
+        ],
+        "panelGrid": {
+          "columns": 2,
+          "rows": 2
+        },
+        "subtitles": [
+          {
+            "panelId": "panel-5",
+            "kind": "narration",
+            "text": "三个视图共享事实，图片作为受检本地资产交付。",
+            "factIds": [
+              "fact-1",
+              "fact-5"
+            ]
+          },
+          {
+            "panelId": "panel-6",
+            "kind": "narration",
+            "text": "六项检查全部通过，一页纸与漫画事实覆盖均为百分之百。",
+            "factIds": [
+              "fact-3",
+              "fact-6"
+            ]
+          },
+          {
+            "panelId": "panel-7",
+            "kind": "narration",
+            "text": "不安全资产被拦截，图片生成失败则显式切换整套编辑型漫画。",
+            "factIds": [
+              "fact-5",
+              "fact-7"
+            ]
+          },
+          {
+            "panelId": "panel-8",
+            "kind": "narration",
+            "text": "验证失败时保留可定位错误，并拒绝交付。",
+            "factIds": [
+              "fact-8"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "theme": {
+    "articleTheme": "signal-editorial",
+    "onePageLayout": "linear-progression",
+    "illustrationStyle": "technical-editorial",
+    "comicStyle": "clear-line",
+    "comicLayout": "two-by-two",
+    "palette": "cobalt-orange-cream",
+    "colors": {
+      "paper": "#F6F0E4",
+      "surface": "#FFFDF8",
+      "ink": "#17233F",
+      "muted": "#667085",
+      "accent": "#2457D6",
+      "signal": "#F47A3D"
+    }
+  },
+  "markdown": "# 从长文章到可验证三视图：一条可追踪的内容生产线\n\n> 用同一份事实账本连接完整阅读、一页纸与编辑型漫画\n\n## 一分钟速览\n\n可靠的内容转换不是把长文压短，而是让完整原文、视觉摘要和漫画各司其职，并在交付前共同通过内容、安全与事实覆盖检查。\n\n- 阅读视图保留完整结构，一页纸负责扫描，漫画负责叙事\n- 采集、规范化、事实映射和输出验证组成可追踪流程\n- 任何不完整、不安全或验证失败的结果都不能静默交付\n\n## 为什么摘要不能冒充原文\n\n阅读、摘要和漫画承担不同任务：阅读视图要完整保留原文结构与上下文，一页纸帮助快速扫描重点，漫画则用场景和角色重组理解路径。摘要不能替代原文，漫画也不能成为新的事实来源。\n\n三个视图必须共享同一份事实账本。这样，读者既能快速理解，也能回到完整内容核对每一个重要结论。\n\n## 同一份事实如何流向三个视图\n\n1. 采集：先保存标题、段落、列表、表格、代码和媒体链接的来源快照。\n2. 规范化：移除导航等页面噪声，但不改写被保留内容的含义与顺序。\n3. 映射事实：把八条事实逐一连接到一页纸模块和漫画分镜。\n4. 验证输出：重新计算内容完整度、事实覆盖率、资产安全和离线文件一致性。\n\n构建器只接受版本化数据包，不接受远程 HTML 字符串；远程页面必须先转换为经过检查的结构化快照。\n\n![蓝色夹克编辑与橙色验证机器人的角色参考图，展示多角度、表情和扫描状态](assets/comic/character-reference.png)\n\n*角色参考图用于保持两页漫画中的人物与配色连续。*\n\n图片必须保存为安全的本地资产，并记录生成方式、文件哈希、格式、尺寸和字节数，成品页面不依赖远程图片。\n\n## 发布前的六项检查\n\n*交付门禁*\n\n| 检查项 | 通过条件 |\n| --- | --- |\n| 文本 | 来源文字完整保留，缺失项为零 |\n| 章节 | 标题和顺序与来源快照一致 |\n| 表格 | 表头、行列和单元格内容完整 |\n| 代码 | 代码块按原样进入阅读视图 |\n| 媒体链接 | 保留为安全链接，不加载远程可执行内容 |\n| 事实覆盖 | 一页纸和漫画均覆盖全部事实 |\n\n完整展开模式要求一页纸与漫画对事实账本达到百分之百覆盖；任何事实缺口都会让验证失败。\n\n## 失败也必须可解释\n\n如果提取不完整，系统必须指出缺失的章节或内容块；如果媒体不安全，系统必须阻止它进入成品并说明原因。\n\n如果图片生成不可用、不安全或在有限重试后仍失败，必须显式切换为整套编辑型漫画回退，不能混用两种漫画交付模式。\n\n如果最终验证未通过，构建流程必须拒绝交付，并保留可定位的错误信息供下一轮修正。\n\n来源：项目原创演示文章\n",
+  "sourceManifest": {
+    "sourceType": "pasted-text",
+    "sourceName": "项目原创演示文章",
+    "capturedAt": "2026-08-25T00:00:00.000Z",
+    "assets": [
+      {
+        "path": "assets/comic/character-reference.png",
+        "kind": "ai-generated",
+        "capturedAt": "2026-08-25T00:00:00.000Z",
+        "purpose": "保持两页编辑型漫画中编辑和验证机器人角色、表情与配色连续",
+        "generationMethod": "native-imagegen",
+        "createdFor": "traceable-three-view-pipeline",
+        "sha256": "f265dd995aef5a2eb033d25959154e4e4a80cb73ac277483489b0e5bbda32e8a",
+        "format": "png",
+        "mimeType": "image/png",
+        "bytes": 2052863,
+        "width": 1536,
+        "height": 1024
+      },
+      {
+        "path": "assets/comic/page-01.png",
+        "kind": "ai-generated",
+        "capturedAt": "2026-08-25T00:00:00.000Z",
+        "purpose": "呈现采集、规范化和事实映射的前四格原创漫画",
+        "generationMethod": "native-imagegen",
+        "createdFor": "traceable-three-view-pipeline",
+        "sha256": "e7c7160ba72c87fed0e6e754c5da1f042fd47de78cae1b20a2546494797589d6",
+        "format": "png",
+        "mimeType": "image/png",
+        "bytes": 2324378,
+        "width": 1536,
+        "height": 1024
+      },
+      {
+        "path": "assets/comic/page-02.png",
+        "kind": "ai-generated",
+        "capturedAt": "2026-08-25T00:00:00.000Z",
+        "purpose": "呈现三视图、六项门禁、安全回退与拒绝失败交付的后四格原创漫画",
+        "generationMethod": "native-imagegen",
+        "createdFor": "traceable-three-view-pipeline",
+        "sha256": "090d674700719dd4b8071170811cccaa1d23197a4d75b78af4e1dd4ac0c8eff5",
+        "format": "png",
+        "mimeType": "image/png",
+        "bytes": 2251269,
+        "width": 1536,
+        "height": 1024
+      }
+    ]
+  }
+}

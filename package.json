@@ -13,5 +13,8 @@
     "release:package": "node scripts/package-release.mjs",
     "repository:validate": "node scripts/validate-repository.mjs",
     "validate": "npm test && npm run repository:validate && npm run demo:verify"
+  },
+  "devDependencies": {
+    "yaml": "2.9.0"
   }
 }

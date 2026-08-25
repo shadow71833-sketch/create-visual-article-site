@@ -231,6 +231,130 @@ test("accepts quoted and escaped uses keys with pinned action refs", async () =>
   }
 });
 
+test("rejects YAML explicit mapping keys that could bypass action pin validation", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "visual-article-repo-"));
+  try {
+    await writeRepository(root);
+    await writeFile(
+      path.join(root, ".github/workflows/explicit-key.yml"),
+      [
+        "steps:",
+        '  - ? "u\\u0073es"',
+        "    : actions/checkout@v7",
+        "",
+      ].join("\n"),
+      "utf8",
+    );
+
+    const result = await validateRepository(root);
+
+    assert.equal(result.ok, false);
+    assert.ok(
+      result.errors.some(
+        (error) =>
+          error.includes("explicit-key.yml") &&
+          error.includes("explicit mapping keys are not supported"),
+      ),
+    );
+  } finally {
+    await rm(root, {recursive: true, force: true});
+  }
+});
+
+test("rejects mutable action refs behind YAML tag and alias mapping keys", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "visual-article-repo-"));
+  try {
+    await writeRepository(root);
+    await writeFile(
+      path.join(root, ".github/workflows/tagged-key.yml"),
+      [
+        "steps:",
+        "  - !!str uses: actions/checkout@v7",
+        "",
+      ].join("\n"),
+      "utf8",
+    );
+    await writeFile(
+      path.join(root, ".github/workflows/alias-key.yml"),
+      [
+        "name: &uses-key uses",
+        "steps:",
+        "  - *uses-key: actions/setup-node@v7",
+        "",
+      ].join("\n"),
+      "utf8",
+    );
+
+    const result = await validateRepository(root);
+
+    assert.equal(result.ok, false);
+    assert.ok(result.errors.some((error) => error.includes("actions/checkout@v7")));
+    assert.ok(result.errors.some((error) => error.includes("actions/setup-node@v7")));
+  } finally {
+    await rm(root, {recursive: true, force: true});
+  }
+});
+
+test("accepts question marks outside YAML explicit mapping-key syntax", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "visual-article-repo-"));
+  try {
+    await writeRepository(root);
+    await writeFile(
+      path.join(root, ".github/workflows/question-marks.yml"),
+      [
+        "steps:",
+        "  - name: Quoted ? text",
+        "    if: ${{ contains('release?', '?') }}",
+        "    env:",
+        '      PUBLIC_URL: "https://example.invalid/path?view=reading"',
+        "    run: |",
+        "      echo '? block scalar'",
+        "  # ? comment",
+        "",
+      ].join("\n"),
+      "utf8",
+    );
+
+    assert.deepEqual(await validateRepository(root), {ok: true, errors: []});
+  } finally {
+    await rm(root, {recursive: true, force: true});
+  }
+});
+
+test("fails closed on malformed workflows and unsupported YAML tags", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "visual-article-repo-"));
+  try {
+    await writeRepository(root);
+    await writeFile(
+      path.join(root, ".github/workflows/malformed.yml"),
+      'steps:\n  - uses: "actions/checkout@unterminated\n',
+      "utf8",
+    );
+    await writeFile(
+      path.join(root, ".github/workflows/unsupported-tag.yml"),
+      "name: !unsupported tagged\nsteps: []\n",
+      "utf8",
+    );
+
+    const result = await validateRepository(root);
+
+    assert.equal(result.ok, false);
+    assert.ok(
+      result.errors.some(
+        (error) => error.includes("malformed.yml") && error.includes("YAML validation failed"),
+      ),
+    );
+    assert.ok(
+      result.errors.some(
+        (error) =>
+          error.includes("unsupported-tag.yml") && error.includes("YAML validation failed"),
+      ),
+    );
+  } finally {
+    await rm(root, {recursive: true, force: true});
+  }
+});
+
 test("rejects symlinked workflow files", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "visual-article-repo-"));
   try {

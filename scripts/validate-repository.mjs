@@ -1,11 +1,13 @@
 import {lstat, readFile, readdir} from "node:fs/promises";
 import path from "node:path";
 import {fileURLToPath, pathToFileURL} from "node:url";
+import {isCollection, isPair, parseDocument} from "yaml";
 
 const EXPECTED_NAME = "create-visual-article-site";
 const EXPECTED_VERSION = "2.2.0";
 const PAGES_URL = "https://shadow71833-sketch.github.io/create-visual-article-site/";
 const OBSOLETE_ARCHIVE = "create-visual-article-site-v2.0.0.zip";
+const MAX_ALIAS_COUNT = 100;
 const REQUIRED_FILES = [
   ".github/workflows/ci.yml",
   ".github/workflows/pages.yml",
@@ -47,197 +49,73 @@ function parseJson(text, relative, errors) {
   }
 }
 
-const DOUBLE_QUOTED_ESCAPES = new Map([
-  ["0", "\0"],
-  ["a", "\x07"],
-  ["b", "\b"],
-  ["t", "\t"],
-  ["n", "\n"],
-  ["v", "\v"],
-  ["f", "\f"],
-  ["r", "\r"],
-  ["e", "\x1b"],
-  [" ", " "],
-  ["\"", "\""],
-  ["/", "/"],
-  ["\\", "\\"],
-  ["N", "\u0085"],
-  ["_", "\u00a0"],
-  ["L", "\u2028"],
-  ["P", "\u2029"],
-]);
-
-function readDoubleQuotedEscape(line, start) {
-  const escaped = line[start];
-  if (DOUBLE_QUOTED_ESCAPES.has(escaped)) {
-    return {value: DOUBLE_QUOTED_ESCAPES.get(escaped), end: start + 1};
+function hasExplicitMappingKey(node) {
+  if (isPair(node)) {
+    return (
+      node.srcToken?.explicitKey === true ||
+      hasExplicitMappingKey(node.key) ||
+      hasExplicitMappingKey(node.value)
+    );
   }
-  const digitCount = new Map([
-    ["x", 2],
-    ["u", 4],
-    ["U", 8],
-  ]).get(escaped);
-  if (digitCount === undefined) return {error: "invalid double-quoted escape"};
-
-  const digits = line.slice(start + 1, start + 1 + digitCount);
-  if (digits.length !== digitCount || !/^[a-f0-9]+$/i.test(digits)) {
-    return {error: "invalid double-quoted escape"};
-  }
-  const codePoint = Number.parseInt(digits, 16);
-  if (codePoint > 0x10ffff || (codePoint >= 0xd800 && codePoint <= 0xdfff)) {
-    return {error: "invalid double-quoted escape"};
-  }
-  return {value: String.fromCodePoint(codePoint), end: start + 1 + digitCount};
+  if (isCollection(node)) return node.items.some((item) => hasExplicitMappingKey(item));
+  return false;
 }
 
-function readQuotedScalar(line, start) {
-  const quote = line[start];
-  let value = "";
-  for (let index = start + 1; index < line.length; index += 1) {
-    const character = line[index];
-    if (quote === "'" && character === "'" && line[index + 1] === "'") {
-      value += "'";
-      index += 1;
-      continue;
-    }
-    if (quote === "\"" && character === "\\") {
-      const escaped = readDoubleQuotedEscape(line, index + 1);
-      if (escaped.error) return escaped;
-      value += escaped.value;
-      index = escaped.end - 1;
-      continue;
-    }
-    if (character === quote) return {value, end: index + 1};
-    value += character;
+function validateActionReference(relative, action, errors) {
+  if (typeof action !== "string" || action.length === 0) {
+    errors.push(`${relative}: uses field must contain a scalar action reference`);
+    return;
   }
-  return {error: "unterminated quoted scalar"};
+  const separator = action.lastIndexOf("@");
+  const ref = separator === -1 ? "" : action.slice(separator + 1);
+  if (!/^[a-f0-9]{40}$/i.test(ref)) {
+    errors.push(`${relative}: action ${action} must use a full 40-character commit SHA`);
+  }
 }
 
-function yamlCommentIndex(line) {
-  for (let index = 0; index < line.length; index += 1) {
-    const character = line[index];
-    if (character === "\"" || character === "'") {
-      const scalar = readQuotedScalar(line, index);
-      if (scalar.error) return line.length;
-      index = scalar.end - 1;
-    } else if (character === "#" && (index === 0 || /\s/.test(line[index - 1]))) {
-      return index;
+function validateUsesValues(relative, value, errors, visited = new WeakSet()) {
+  if (value === null || typeof value !== "object" || visited.has(value)) return;
+  visited.add(value);
+
+  if (value instanceof Map) {
+    for (const [key, child] of value) {
+      if (key === "uses") validateActionReference(relative, child, errors);
+      validateUsesValues(relative, child, errors, visited);
     }
+    return;
   }
-  return line.length;
-}
-
-function isMappingKeyBoundary(line, index) {
-  let previous = index - 1;
-  while (previous >= 0 && /[ \t]/.test(line[previous])) previous -= 1;
-  if (previous < 0 || line[previous] === "{" || line[previous] === ",") return true;
-  return line[previous] === "-" && (previous === 0 || /\s/.test(line[previous - 1]));
-}
-
-function skipInlineWhitespace(line, start, end) {
-  let cursor = start;
-  while (cursor < end && /[ \t]/.test(line[cursor])) cursor += 1;
-  return cursor;
-}
-
-function readUsesField(line, start, commentAt) {
-  let cursor = skipInlineWhitespace(line, start, commentAt);
-  if (cursor >= commentAt || /[,}\]]/.test(line[cursor])) {
-    return {
-      field: {error: "uses field must contain a scalar action reference"},
-      end: cursor,
-    };
+  if (Array.isArray(value) || value instanceof Set) {
+    for (const child of value) validateUsesValues(relative, child, errors, visited);
+    return;
   }
-
-  if (line[cursor] === "\"" || line[cursor] === "'") {
-    const scalar = readQuotedScalar(line, cursor);
-    if (scalar.error) {
-      return {field: {error: `uses field contains an ${scalar.error}`}, end: commentAt};
-    }
-    cursor = skipInlineWhitespace(line, scalar.end, commentAt);
-    if (cursor < commentAt && !/[,}\]]/.test(line[cursor])) {
-      return {field: {error: "uses field contains an invalid quoted scalar"}, end: cursor};
-    }
-    if (scalar.value.length === 0) {
-      return {
-        field: {error: "uses field must contain a scalar action reference"},
-        end: cursor,
-      };
-    }
-    return {field: {value: scalar.value}, end: cursor};
+  for (const [key, child] of Object.entries(value)) {
+    if (key === "uses") validateActionReference(relative, child, errors);
+    validateUsesValues(relative, child, errors, visited);
   }
-
-  const valueStart = cursor;
-  while (cursor < commentAt && !/[,}\]]/.test(line[cursor])) cursor += 1;
-  const value = line.slice(valueStart, cursor).trim();
-  return {
-    field:
-      value.length === 0
-        ? {error: "uses field must contain a scalar action reference"}
-        : {value},
-    end: cursor,
-  };
-}
-
-function extractUsesFields(line) {
-  const fields = [];
-  const commentAt = yamlCommentIndex(line);
-  for (let index = 0; index < commentAt; index += 1) {
-    const character = line[index];
-    let key = null;
-    let cursor = index;
-    if (character === "\"" || character === "'") {
-      const scalar = readQuotedScalar(line, cursor);
-      if (scalar.error) break;
-      if (isMappingKeyBoundary(line, index)) key = scalar.value;
-      cursor = scalar.end;
-    } else if (line.startsWith("uses", index) && isMappingKeyBoundary(line, index)) {
-      cursor = index + "uses".length;
-      if (!/[A-Za-z0-9_-]/.test(line[cursor] ?? "")) key = "uses";
-    } else {
-      continue;
-    }
-
-    cursor = skipInlineWhitespace(line, cursor, commentAt);
-    if (line[cursor] !== ":" || key !== "uses") {
-      index = cursor - 1;
-      continue;
-    }
-    const result = readUsesField(line, cursor + 1, commentAt);
-    fields.push(result.field);
-    index = result.end;
-  }
-  return fields;
 }
 
 function validateActionPins(relative, text, errors) {
   if (text === null) return;
-  let blockScalarIndent = null;
-  const lines = text.split(/\r?\n/);
-  for (const [lineIndex, line] of lines.entries()) {
-    const indentation = line.match(/^[ \t]*/)[0].length;
-    if (blockScalarIndent !== null) {
-      if (line.trim().length === 0 || indentation > blockScalarIndent) continue;
-      blockScalarIndent = null;
-    }
-
-    for (const field of extractUsesFields(line)) {
-      if (field.error) {
-        errors.push(`${relative}:${lineIndex + 1}: ${field.error}`);
-        continue;
+  try {
+    const document = parseDocument(text, {
+      keepSourceTokens: true,
+      strict: true,
+      uniqueKeys: true,
+    });
+    const diagnostics = [...document.errors, ...document.warnings];
+    if (diagnostics.length > 0) {
+      for (const diagnostic of diagnostics) {
+        errors.push(`${relative}: YAML validation failed: ${diagnostic.message}`);
       }
-      const action = field.value;
-      const separator = action.lastIndexOf("@");
-      const ref = separator === -1 ? "" : action.slice(separator + 1);
-      if (!/^[a-f0-9]{40}$/i.test(ref)) {
-        errors.push(`${relative}: action ${action} must use a full 40-character commit SHA`);
-      }
+      return;
     }
-
-    const content = line.slice(0, yamlCommentIndex(line)).trimEnd();
-    if (/:\s*[>|](?:[1-9]?[+-]?|[+-]?[1-9]?)?\s*$/.test(content)) {
-      blockScalarIndent = indentation;
+    if (hasExplicitMappingKey(document.contents)) {
+      errors.push(`${relative}: explicit mapping keys are not supported`);
     }
+    const workflow = document.toJS({mapAsMap: true, maxAliasCount: MAX_ALIAS_COUNT});
+    validateUsesValues(relative, workflow, errors);
+  } catch (error) {
+    errors.push(`${relative}: YAML validation failed: ${error.message}`);
   }
 }
 

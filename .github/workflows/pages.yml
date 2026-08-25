@@ -26,6 +26,8 @@ jobs:
         with:
           node-version: "22"
           package-manager-cache: false
+      - name: Install dependencies
+        run: npm ci
       - name: Build verified demo
         run: npm run demo:build
       - name: Verify demo

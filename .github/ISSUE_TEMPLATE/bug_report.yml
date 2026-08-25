@@ -1,0 +1,66 @@
+name: Bug report
+description: Report a reproducible problem with the skill or generated site.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the project. Remove API keys, cookies, tokens, private URLs, and copyrighted source material that you are not authorized to share before submitting.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Which release or commit are you using?
+      placeholder: 2.2.0 or a commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: input-route
+    attributes:
+      label: Input route
+      description: Which supported input route exposed the problem?
+      options:
+        - Current Chrome article
+        - Public webpage URL
+        - PDF file
+        - Markdown file
+        - Pasted source text
+        - Other or not applicable
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe the result you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Sanitized reproduction
+      description: Provide the smallest reproducible steps and sanitized sample data. Do not include secrets or private source material.
+      placeholder: |
+        1. Run ...
+        2. Provide sanitized input ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: validation-output
+    attributes:
+      label: Validation output
+      description: Paste relevant test or verification output after removing paths, credentials, tokens, cookies, and other secrets.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating system
+      description: Include the operating system name, version, and CPU architecture when known.
+      placeholder: macOS 15 arm64
+    validations:
+      required: true

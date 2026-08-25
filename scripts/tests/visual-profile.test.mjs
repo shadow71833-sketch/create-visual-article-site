@@ -109,6 +109,7 @@ test("removes consumer-facing fact UI and differentiates editorial module types"
   const css = await readFile(new URL("../../assets/site-template/site.css", import.meta.url), "utf8");
   assert.doesNotMatch(css, /\.fact-(?:links|chip|list|id|claim|status)/);
   assert.doesNotMatch(css, /\.evidence-rail/);
+  assert.doesNotMatch(css, /data-panel-id|\.comic-subtitle::before/);
   assert.match(css, /\.article-shell\s*\{[^}]*width:\s*min\(58rem,\s*calc\(100% - 2rem\)\);/s);
   assert.match(css, /\.one-page-module\[data-module="process"\][\s\S]*?\.module-item::before/s);
   assert.match(css, /\.one-page-module\[data-module="comparison"\][\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/s);

@@ -469,7 +469,6 @@ html[data-one-page-layout="bento-grid"] .module-item:last-child:nth-child(odd) {
   color: white;
   background: var(--ink);
 }
-.comic-subtitle::before { content: attr(data-panel-id); display: block; margin-bottom: 0.25rem; color: color-mix(in srgb, var(--signal) 82%, white); font-family: var(--utility); font-size: 0.64rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
 .comic-subtitle[data-kind="narration"] { font-size: clamp(0.82rem, 1.6vw, 1rem); }
 .comic-subtitle[data-kind="dialogue"] { font-family: var(--display); font-size: clamp(1.05rem, 2.4vw, 1.55rem); font-weight: 800; }
 .comic-page figcaption { padding: 0.9rem 1rem; color: var(--muted); font-size: 0.78rem; }

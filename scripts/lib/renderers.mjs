@@ -59,7 +59,7 @@ export function renderOnePage(articlePackage) {
 
 function renderComicSubtitles(subtitles = []) {
   if (subtitles.length === 0) return "";
-  return `<div class="comic-subtitles" aria-label="漫画字幕">${subtitles.map((subtitle) => `<div class="comic-subtitle" data-kind="${escapeAttribute(subtitle.kind)}" data-panel-id="${escapeAttribute(subtitle.panelId)}">${escapeHtml(subtitle.text)}</div>`).join("")}</div>`;
+  return `<div class="comic-subtitles" aria-label="漫画字幕">${subtitles.map((subtitle) => `<div class="comic-subtitle" data-kind="${escapeAttribute(subtitle.kind)}">${escapeHtml(subtitle.text)}</div>`).join("")}</div>`;
 }
 
 function renderComicPanelGrid(page, panelsById) {
@@ -68,8 +68,8 @@ function renderComicPanelGrid(page, panelsById) {
     const column = index % columns;
     const row = Math.floor(index / columns);
     const panel = panelsById.get(subtitle.panelId);
-    const alt = panel?.scene ? `${page.alt}：${panel.scene}` : `${page.alt}：${subtitle.panelId}`;
-    return `<article class="comic-panel-frame comic-panel-col-${column} comic-panel-row-${row}"><div class="comic-panel-visual"><img class="comic-panel-sheet" src="${escapeAttribute(page.image)}" alt="${escapeAttribute(alt)}" loading="lazy" decoding="async"></div><div class="comic-subtitle comic-panel-caption" data-kind="${escapeAttribute(subtitle.kind)}" data-panel-id="${escapeAttribute(subtitle.panelId)}">${escapeHtml(subtitle.text)}</div></article>`;
+    const alt = panel?.scene ? `${page.alt}：${panel.scene}` : `${page.alt}：漫画分格`;
+    return `<article class="comic-panel-frame comic-panel-col-${column} comic-panel-row-${row}"><div class="comic-panel-visual"><img class="comic-panel-sheet" src="${escapeAttribute(page.image)}" alt="${escapeAttribute(alt)}" loading="lazy" decoding="async"></div><div class="comic-subtitle comic-panel-caption" data-kind="${escapeAttribute(subtitle.kind)}">${escapeHtml(subtitle.text)}</div></article>`;
   }).join("");
   return `<div class="comic-panel-grid comic-grid-columns-${columns} comic-grid-rows-${rows}" aria-label="逐格漫画">${frames}</div>`;
 }

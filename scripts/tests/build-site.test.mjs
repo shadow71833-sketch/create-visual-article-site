@@ -166,7 +166,8 @@ test("renders escaped comic subtitles below matching panel images", async () => 
     assert.match(html, /class="comic-panel-frame comic-panel-col-0 comic-panel-row-0"/);
     assert.match(html, /class="comic-panel-visual"/);
     assert.match(html, /class="comic-panel-sheet"/);
-    assert.match(html, /class="comic-subtitle comic-panel-caption" data-kind="narration" data-panel-id="panel-1"/);
+    assert.match(html, /class="comic-subtitle comic-panel-caption" data-kind="narration"/);
+    assert.doesNotMatch(html, /data-panel-id|panel-1/);
     assert.doesNotMatch(html, /comic-panel-overlay/);
     assert.match(html, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
     assert.doesNotMatch(html, /<script>alert\(1\)<\/script>/);

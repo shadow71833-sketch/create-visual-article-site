@@ -10,7 +10,11 @@
     "test": "node --test scripts/tests/*.test.mjs",
     "demo:build": "node scripts/build-demo.mjs --approved-root . --output docs/demo",
     "demo:verify": "node scripts/verify-output.mjs --approved-root . --output docs/demo",
+    "release:package": "node scripts/package-release.mjs",
     "repository:validate": "node scripts/validate-repository.mjs",
     "validate": "npm test && npm run repository:validate && npm run demo:verify"
+  },
+  "devDependencies": {
+    "yaml": "2.9.0"
   }
 }

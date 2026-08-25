@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Added
+
+- Reproducible, tag-based ZIP packaging with SHA-256 evidence.
+- Verified GitHub Pages deployment for the checked-in three-view showcase.
+
+### Security
+
+- Pinned every GitHub Action to an immutable commit SHA.
+- Added repository validation for workflow pinning and stale release archives.
+
 ## [2.2.0] - 2026-08-25
 
 ### Added
